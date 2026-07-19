@@ -59,13 +59,7 @@ async fn main() -> Result<()> {
         bail!("URL must start with http:// or https://");
     }
 
-    println!();
-    println!("  stress-attack · authorized load tester");
-    println!("  target      : {}", args.url);
-    println!("  method      : {}", args.method.to_uppercase());
-    println!("  concurrency : {}", args.concurrency);
-    println!("  requests    : {}", args.requests);
-    println!();
+    print_kali_panel(&args);
 
     let client = Client::builder()
         .timeout(Duration::from_secs(args.timeout))
@@ -153,4 +147,41 @@ async fn main() -> Result<()> {
     println!();
 
     Ok(())
+}
+
+fn print_kali_panel(args: &Args) {
+    // Painel estilo terminal Kali — texto ao abrir a tool
+    println!();
+    println!("\x1b[31m╔══════════════════════════════════════════════════════════╗\x1b[0m");
+    println!("\x1b[31m║\x1b[0m  \x1b[1;31mSTRESS-ATTACK\x1b[0m                                          \x1b[31m║\x1b[0m");
+    println!("\x1b[31m║\x1b[0m  by \x1b[1;37mProezaDEV\x1b[0m  ·  \x1b[90mproezadev@gmail.com\x1b[0m                   \x1b[31m║\x1b[0m");
+    println!("\x1b[31m╠══════════════════════════════════════════════════════════╣\x1b[0m");
+    println!("\x1b[31m║\x1b[0m  mode        : \x1b[32mauthorized load test\x1b[0m                      \x1b[31m║\x1b[0m");
+    println!(
+        "\x1b[31m║\x1b[0m  target      : \x1b[36m{:<44}\x1b[0m \x1b[31m║\x1b[0m",
+        truncate(&args.url, 44)
+    );
+    println!(
+        "\x1b[31m║\x1b[0m  method      : \x1b[33m{:<44}\x1b[0m \x1b[31m║\x1b[0m",
+        args.method.to_uppercase()
+    );
+    println!(
+        "\x1b[31m║\x1b[0m  concurrency : \x1b[33m{:<44}\x1b[0m \x1b[31m║\x1b[0m",
+        args.concurrency.to_string()
+    );
+    println!(
+        "\x1b[31m║\x1b[0m  requests    : \x1b[33m{:<44}\x1b[0m \x1b[31m║\x1b[0m",
+        args.requests.to_string()
+    );
+    println!("\x1b[31m╚══════════════════════════════════════════════════════════╝\x1b[0m");
+    println!();
+}
+
+fn truncate(s: &str, max: usize) -> String {
+    if s.chars().count() <= max {
+        format!("{s:<max$}")
+    } else {
+        let t: String = s.chars().take(max.saturating_sub(1)).collect();
+        format!("{t}…")
+    }
 }
