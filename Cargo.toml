@@ -1,0 +1,19 @@
+﻿[package]
+name = "stress-attack"
+version = "0.1.0"
+edition = "2021"
+description = "Authorized HTTP stress / load tester by ProezaDEV"
+license = "MIT"
+authors = ["ProezaDEV <proezadev@gmail.com>"]
+readme = "README.md"
+
+[[bin]]
+name = "stress"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "gzip"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "time", "sync"] }
+anyhow = "1"
+indicatif = "0.17"
